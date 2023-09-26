@@ -34,6 +34,6 @@ void add_mask(ip_addr mask) {
         fprintf(file, "/%d.%d.%d.%d\n", mask.octets[0], mask.octets[1], mask.octets[2], mask.octets[3]);
         fclose(file);
     }else{
-        printf("Le masque de sous-réseau saisi n'est pas valide.\n");
+        printf("Le masque de sous-reseau saisi n'est pas valide.\n");
     }
 }
