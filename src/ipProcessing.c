@@ -52,3 +52,25 @@ void add_mask(ip_addr mask) {
         printf("Le masque de sous-reseau saisi n'est pas valide.\n");
     }
 }
+
+void delete_ip(int index) {
+    FILE *file = fopen("../include/ips.txt", "r");
+    if (file == NULL) {
+        perror("Erreur lors de l'ouverture du fichier.");
+        return;
+    }
+    char line[40];
+    int i = 1;
+    FILE *tempFile = fopen("../include/temp.txt", "w");
+    while (fgets(line, 40, file) != NULL) {
+        if (i != index) {
+            fputs(line, tempFile);
+        }
+        i++;
+    }
+    fclose(file);
+    fclose(tempFile);
+    remove("../include/ips.txt");
+    rename("../include/temp.txt", "../include/ips.txt");
+    printf("Adresse IP supprimee.\n");
+}
