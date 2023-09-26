@@ -2,6 +2,9 @@ typedef struct {
     int octets[4];
 } ip_addr;
 
+// Fonction qui vérifie si le fichier existe, sinon il le crée
+void check_file(FILE *file);
+
 // Fonction qui vérifie si une adresse IP est valide
 int is_valid_ip(ip_addr ip);
 
