@@ -33,6 +33,13 @@ int main() {
                 add_mask(mask);
                 break;
             }
+            case 'd': {
+                int index;
+                printf("Enter index : \n");
+                scanf("%d", &index);
+                delete_ip(index);
+                break;
+            }
             case 'q': {
                 return 0;
             }
