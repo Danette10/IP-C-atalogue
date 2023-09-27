@@ -34,7 +34,6 @@ int is_valid_ip(ip_addr ip) {
 
 void add_ip(ip_addr ip) {
     if(is_valid_ip(ip)) {
-        check_file(fopen("../include/ips.txt", "r"));
         FILE *file = fopen("../include/ips.txt", "a");
         fprintf(file, "%d.%d.%d.%d", ip.octets[0], ip.octets[1], ip.octets[2], ip.octets[3]);
         fclose(file);
