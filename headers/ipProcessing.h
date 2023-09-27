@@ -16,3 +16,4 @@ void add_mask(ip_addr mask);
 
 // Fonction qui supprime une adresse IP du fichier
 void delete_ip(int index);
+
