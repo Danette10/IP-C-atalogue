@@ -2,6 +2,9 @@ typedef struct {
     int octets[4];
 } ip_addr;
 
+// Fonction qui affiche toutes les adresses IP du fichier
+void list_ips();
+
 // Fonction qui vérifie si le fichier existe, sinon il le crée
 void check_file(FILE *file);
 

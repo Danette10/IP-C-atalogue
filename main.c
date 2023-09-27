@@ -33,6 +33,10 @@ int main() {
                 add_mask(mask);
                 break;
             }
+            case 'l': {
+                list_ips();
+                break;
+            }
             case 'q': {
                 return 0;
             }
