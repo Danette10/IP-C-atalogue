@@ -1,6 +1,21 @@
 #include <stdio.h>
 #include "../headers/ipProcessing.h"
 
+void list_ips() {
+    FILE *file = fopen("../include/ips.txt", "r");
+    if (file == NULL) {
+        perror("Erreur lors de l'ouverture du fichier.");
+        return;
+    }
+    char line[40];
+    int i = 1;
+    while (fgets(line, 40, file) != NULL) {
+        printf("%d. %s", i, line);
+        i++;
+    }
+    fclose(file);
+}
+
 void check_file(FILE *file) {
     if(file == NULL) {
         file = fopen("../include/ips.txt", "w");
