@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "../headers/ipProcessing.h"
 
 void list_ips() {
@@ -10,7 +11,8 @@ void list_ips() {
     char line[40];
     int i = 1;
     while (fgets(line, 40, file) != NULL) {
-        printf("%d. %s", i, line);
+        char *token = strtok(line, "/");
+        printf("%d- %s\n", i, token);
         i++;
     }
     fclose(file);
