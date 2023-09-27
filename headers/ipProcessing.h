@@ -9,7 +9,7 @@ void to_hex(unsigned char octet, char *output);
 void to_binary(unsigned char octet, char *output);
 
 // Fonction qui affiche toutes les adresses IP du fichier
-void list_ips();
+void list_ips(int env);
 
 // Fonction qui vérifie si une adresse IP est valide
 int is_valid_ip(ip_addr ip);

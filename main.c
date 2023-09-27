@@ -35,7 +35,7 @@ int main() {
             }
             case 'd': {
                 int index;
-                list_ips();
+                list_ips(1);
                 printf("0 - Cancel\n");
                 printf("Enter index : \n");
                 scanf("%d", &index);
@@ -47,7 +47,7 @@ int main() {
                 break;
             }
             case 'l': {
-                list_ips();
+                list_ips(0);
                 break;
             }
             case 'q': {

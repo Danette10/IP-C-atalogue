@@ -3,6 +3,10 @@
 #include <stdlib.h>
 #include "../headers/ipProcessing.h"
 
+#define IP_STR_MAX 16
+#define HEX_STR_MAX 12
+#define BIN_STR_MAX 36
+#define LINE_MAX 80
 
 void to_hex(unsigned char octet, char *output) {
     sprintf(output, "%02X", octet);
@@ -15,45 +19,30 @@ void to_binary(unsigned char octet, char *output) {
     output[8] = '\0';
 }
 
-void list_ips() {
+void list_ips(int env) {
     FILE *file = fopen("../include/ips.txt", "r");
-    if (file == NULL) {
+    if (!file) {
         perror("Erreur lors de l'ouverture du fichier.");
         return;
     }
-    char line[40];
-    char original_line[40]; // Nouvelle chaîne pour copier la ligne originale
+
+    char line[LINE_MAX];
+    char original_ip[IP_STR_MAX];
+    char hex_ip[HEX_STR_MAX];
+    char bin_ip[BIN_STR_MAX];
     int i = 1;
 
-    while (fgets(line, 40, file) != NULL) {
-        strncpy(original_line, line, sizeof(original_line)); // Copiez la ligne originale
-
-        char *token = strtok(line, "/");
-
-        // Pour convertir en hexa et binaire
-        char hex[12], bin[36];
-        unsigned char octet;
-        char temp[3], tempBin[9];
-
-        hex[0] = '\0';
-        bin[0] = '\0';
-
-        for(int j = 0; j < 4; j++) {
-            if(j > 0) {
-                token = strtok(NULL, ".");
+    while (fgets(line, sizeof(line), file)) {
+        if (3 == sscanf(line, "%15[^/]/%11[^/]/%35[^/]", original_ip, hex_ip, bin_ip)) {
+            if(env == 1){
+                printf("%d - %s\n", i, original_ip);
+            }else{
+                printf("%d- %s \n%s \n%s\n", i, original_ip, bin_ip, hex_ip);
             }
-            octet = atoi(token); // Convertit le token en int
-            to_hex(octet, temp);
-            strcat(hex, temp);
-            if (j < 3) strcat(hex, ".");
-
-            to_binary(octet, tempBin);
-            strcat(bin, tempBin);
-            if (j < 3) strcat(bin, ".");
+            i++;
+        } else {
+            fprintf(stderr, "Erreur de format pour la ligne: %s\n", line);
         }
-
-        printf("%d- \n%s \n%s \n%s\n", i, strtok(original_line, "/"), bin, hex);
-        i++;
     }
     fclose(file);
 }
@@ -68,8 +57,10 @@ int is_valid_ip(ip_addr ip) {
 }
 
 void add_ip(ip_addr ip) {
-    char hex[12], bin[36];
-    char temp[3], tempBin[9];
+    char hex[HEX_STR_MAX];
+    char bin[BIN_STR_MAX];
+    char temp[3];
+    char tempBin[9];
 
     hex[0] = '\0';
     bin[0] = '\0';
@@ -82,7 +73,6 @@ void add_ip(ip_addr ip) {
 
         to_binary(octet, tempBin);
         strcat(bin, tempBin);
-        if (j < 3) strcat(bin, ".");
     }
 
     if(is_valid_ip(ip)) {
@@ -90,9 +80,9 @@ void add_ip(ip_addr ip) {
         // Écrire l'adresse en format décimal
         fprintf(file, "%d.%d.%d.%d", ip.octets[0], ip.octets[1], ip.octets[2], ip.octets[3]);
         // Écrire l'adresse en format hexadécimal
-        fprintf(file, " %s", hex);
+        fprintf(file, "/%s", hex);
         // Écrire l'adresse en format binaire
-        fprintf(file, " %s\n", bin);
+        fprintf(file, "/%s", bin);
         fclose(file);
     } else {
         printf("L'adresse IP saisie n'est pas valide.\n");
@@ -115,10 +105,10 @@ void delete_ip(int index) {
         perror("Erreur lors de l'ouverture du fichier.");
         return;
     }
-    char line[40];
+    char line[LINE_MAX];
     int i = 1;
     FILE *tempFile = fopen("../include/temp.txt", "w");
-    while (fgets(line, 40, file) != NULL) {
+    while (fgets(line, sizeof(line), file)) {
         if (i != index) {
             fputs(line, tempFile);
         }
