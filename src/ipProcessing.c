@@ -3,12 +3,11 @@
 #include <stdlib.h>
 #include "../headers/ipProcessing.h"
 
-// Fonction qui convertit un octet en hexadécimal
+
 void to_hex(unsigned char octet, char *output) {
     sprintf(output, "%02X", octet);
 }
 
-// Fonction qui convertit un octet en binaire
 void to_binary(unsigned char octet, char *output) {
     for (int i = 7; i >= 0; i--) {
         output[7-i] = (octet & (1 << i)) ? '1' : '0';
