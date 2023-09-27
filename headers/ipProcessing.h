@@ -2,6 +2,12 @@ typedef struct {
     int octets[4];
 } ip_addr;
 
+// Fonction qui convertit un octet en hexadécimal
+void to_hex(unsigned char octet, char *output);
+
+// Fonction qui convertit un octet en binaire
+void to_binary(unsigned char octet, char *output);
+
 // Fonction qui affiche toutes les adresses IP du fichier
 void list_ips();
 
@@ -16,3 +22,4 @@ void add_mask(ip_addr mask);
 
 // Fonction qui supprime une adresse IP du fichier
 void delete_ip(int index);
+
