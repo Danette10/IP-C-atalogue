@@ -36,9 +36,14 @@ int main() {
             case 'd': {
                 int index;
                 list_ips();
+                printf("0 - Cancel\n");
                 printf("Enter index : \n");
                 scanf("%d", &index);
-                delete_ip(index);
+                if (index == 0) {
+                    break;
+                }else{
+                    delete_ip(index);
+                }
                 break;
             }
             case 'l': {
