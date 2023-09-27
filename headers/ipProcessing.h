@@ -5,9 +5,6 @@ typedef struct {
 // Fonction qui affiche toutes les adresses IP du fichier
 void list_ips();
 
-// Fonction qui vérifie si le fichier existe, sinon il le crée
-void check_file(FILE *file);
-
 // Fonction qui vérifie si une adresse IP est valide
 int is_valid_ip(ip_addr ip);
 
