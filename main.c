@@ -50,6 +50,16 @@ int main() {
                 list_ips(0);
                 break;
             }
+            case 's': {
+                ip_addr ip;
+                ip_addr mask;
+                printf("Enter address : \n");
+                scanf("%d.%d.%d.%d", &ip.octets[0], &ip.octets[1], &ip.octets[2], &ip.octets[3]);
+                printf("Enter mask : \n");
+                scanf("%d.%d.%d.%d", &mask.octets[0], &mask.octets[1], &mask.octets[2], &mask.octets[3]);
+                search_similar(ip, mask, 1);
+                break;
+            }
             case 'q': {
                 return 0;
             }

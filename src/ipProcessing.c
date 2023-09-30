@@ -3,11 +3,6 @@
 #include <stdlib.h>
 #include "../headers/ipProcessing.h"
 
-#define IP_STR_MAX 16
-#define HEX_STR_MAX 12
-#define BIN_STR_MAX 36
-#define LINE_MAX 80
-
 void to_hex(unsigned char octet, char *output) {
     sprintf(output, "%02X", octet);
 }
@@ -119,4 +114,77 @@ void delete_ip(int index) {
     remove("../include/ips.txt");
     rename("../include/temp.txt", "../include/ips.txt");
     printf("Adresse IP supprimee.\n");
+}
+
+
+ip_addr str_to_ip_addr(const char* ip_str) {
+    ip_addr addr;
+    sscanf(ip_str, "%u.%u.%u.%u", &addr.octets[0], &addr.octets[1], &addr.octets[2], &addr.octets[3]);
+    return addr;
+}
+
+ip_addr apply_mask(ip_addr ip, ip_addr mask) {
+    ip_addr subnet;
+    for (int i = 0; i < 4; i++) {
+        subnet.octets[i] = ip.octets[i] & mask.octets[i];
+    }
+    return subnet;
+}
+
+void init_ip_array(IPArray* arr) {
+    arr->ips = NULL;
+    arr->size = 0;
+}
+
+void append_to_ip_array(IPArray* arr, ip_addr ip) {
+    arr->ips = realloc(arr->ips, (arr->size + 1) * sizeof(ip_addr));
+    arr->ips[arr->size] = ip;
+    arr->size++;
+}
+
+void free_ip_array(IPArray* arr) {
+    free(arr->ips);
+    init_ip_array(arr);
+}
+
+void search_similar(ip_addr ip, ip_addr mask, int env) {
+    FILE *file = fopen("../include/ips.txt", "r");
+    if (!file) {
+        perror("Erreur lors de l'ouverture du fichier.");
+        return;
+    }
+
+    char line[LINE_MAX];
+    char original_ip[IP_STR_MAX];
+    char hex_ip[HEX_STR_MAX];
+    char bin_ip[BIN_STR_MAX];
+    int i = 1;
+
+    IPArray foundIPs;
+    init_ip_array(&foundIPs);
+    ip_addr user_subnet = apply_mask(ip, mask);
+
+
+    while (fgets(line, sizeof(line), file)) {
+        if (3 == sscanf(line, "%15[^/]/%11[^/]/%35[^/]", original_ip, hex_ip, bin_ip)) {
+            ip_addr current_ip = str_to_ip_addr(original_ip);
+            ip_addr current_subnet = apply_mask(current_ip, mask);
+
+            if (memcmp(user_subnet.octets, current_subnet.octets, sizeof(user_subnet.octets)) == 0) {
+                append_to_ip_array(&foundIPs, current_ip);
+
+                if(env == 1){
+                    printf("%d - %s\n", i, original_ip);
+                } else {
+                    printf("%d- %s \n%s \n%s\n", i, original_ip, bin_ip, hex_ip);
+                }
+                i++;
+            }
+        } else {
+            fprintf(stderr, "Erreur de format pour la ligne: %s\n", line);
+        }
+    }
+
+    fclose(file);
+    free_ip_array(&foundIPs);
 }
