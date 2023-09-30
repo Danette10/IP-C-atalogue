@@ -57,7 +57,7 @@ int main() {
                 scanf("%d.%d.%d.%d", &ip.octets[0], &ip.octets[1], &ip.octets[2], &ip.octets[3]);
                 printf("Enter mask : \n");
                 scanf("%d.%d.%d.%d", &mask.octets[0], &mask.octets[1], &mask.octets[2], &mask.octets[3]);
-                search_similar(ip, mask, 0);
+                search_similar(ip, mask, 1);
                 break;
             }
             case 'q': {
