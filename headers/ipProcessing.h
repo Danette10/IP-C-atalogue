@@ -23,3 +23,5 @@ void add_mask(ip_addr mask);
 // Fonction qui supprime une adresse IP du fichier
 void delete_ip(int index);
 
+// Fonction qui recherche les adresses IP similaires à celle saisie par l'utilisateur
+void search_similar(ip_addr ip, ip_addr mask, int env);

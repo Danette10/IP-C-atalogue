@@ -120,3 +120,32 @@ void delete_ip(int index) {
     rename("../include/temp.txt", "../include/ips.txt");
     printf("Adresse IP supprimee.\n");
 }
+
+
+void search_similar(ip_addr ip, ip_addr mask, int env) {
+    FILE *file = fopen("../include/ips.txt", "r");
+    if (!file) {
+        perror("Erreur lors de l'ouverture du fichier.");
+        return;
+    }
+
+    char line[LINE_MAX];
+    char original_ip[IP_STR_MAX];
+    char hex_ip[HEX_STR_MAX];
+    char bin_ip[BIN_STR_MAX];
+    int i = 1;
+
+    while (fgets(line, sizeof(line), file)) {
+        if (3 == sscanf(line, "%15[^/]/%11[^/]/%35[^/]", original_ip, hex_ip, bin_ip)) {
+            if(env == 1){
+                printf("%d - %s\n", i, original_ip);
+            }else{
+                printf("%d- %s \n%s \n%s\n", i, original_ip, bin_ip, hex_ip);
+            }
+            i++;
+        } else {
+            fprintf(stderr, "Erreur de format pour la ligne: %s\n", line);
+        }
+    }
+    fclose(file);
+}
